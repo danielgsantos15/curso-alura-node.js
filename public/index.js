@@ -1,6 +1,5 @@
 import  chalk  from 'chalk'
 import fs from 'fs'
-import { text } from 'stream/consumers'
 
 function extraiLinks(texto) {
   const regex = /\[([^\]]*)\]\((https?:\/\/[^$#\s].[^\s]*)\)/gm
@@ -27,7 +26,9 @@ async function pegaArquivo(caminhoDoArquivo) {
   }
 }
 
-pegaArquivo('./arquivos/texto.md')
+// pegaArquivo('./arquivos/texto.md')
+
+export default pegaArquivo
 
 // function dominioPrincipal(texto) {
 //   const regex = /https?:\/\/[^\s$.?#].[^\/\s]*\//gm
