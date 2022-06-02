@@ -1,5 +1,6 @@
 import  chalk  from 'chalk'
 import fs from 'fs'
+import path from 'path'
 
 function extraiLinks(texto) {
   const regex = /\[([^\]]*)\]\((https?:\/\/[^$#\s].[^\s]*)\)/gm
@@ -9,26 +10,42 @@ function extraiLinks(texto) {
   while ((temp = regex.exec(texto)) !== null) {
     arrayResults.push({ [temp[1]]: temp[2] })
   }
-  return arrayResults
+  // operador ternário
+  return arrayResults.length === 0 ? 'não há links' : arrayResults
 }
 
 function trataErro(erro) {
   throw new Error(chalk.red(erro.code, 'não há arquivos no caminho'))
 }
 
-async function pegaArquivo(caminhoDoArquivo) {
+async function pegaArquivo(caminho) {
+  const caminhoAbsoluto = path.join('__dirname', '..', caminho)
   const encoding = 'utf-8'
   try{
-    const texto = await fs.promises.readFile(caminhoDoArquivo, encoding)
-    console.log(extraiLinks(texto))
+    const arquivos = await
+    fs.promises.readdir(caminhoAbsoluto, { encoding })
+    const result = await Promise.all(arquivos.map (async (arquivo) => {
+      const localArquivo = `${caminhoAbsoluto}/${arquivo}`
+      const texto = await fs.promises.readFile(localArquivo, encoding)
+      return extraiLinks(texto)
+    }))
+    return result
   } catch(erro) {
     trataErro(erro)
   }
 }
 
-// pegaArquivo('./arquivos/texto.md')
-
 export default pegaArquivo
+
+// async function pegaArquivo(caminhoDoArquivo) {
+// const encoding = 'utf-8'
+//   try{
+//     const texto = await fs.promises.readFile(caminhoDoArquivo, encoding)
+//     return extraiLinks(texto)
+//   } catch(erro) {
+//     trataErro(erro)
+//   }
+// }
 
 // function dominioPrincipal(texto) {
 //   const regex = /https?:\/\/[^\s$.?#].[^\/\s]*\//gm
