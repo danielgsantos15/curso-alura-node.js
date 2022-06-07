@@ -1,13 +1,17 @@
 import fetch from 'node-fetch'
 
 async function checaStatus(arrayURLs) {
-  const arrayStatus = await Promise
-  .all(arrayURLs
-    .map(async url => {
-      const res = await fetch(url)
-      return res.status
-  }))
-  return arrayStatus
+  try{
+    const arrayStatus = await Promise
+    .all(arrayURLs
+      .map(async url => {
+        const res = await fetch(url)
+        return `${res.status} - ${res.statusText}`
+      }))
+      return arrayStatus
+    } catch (error) {
+      errorHandler(error.message)
+    }
 }
 
 function geraArrayDeURLs(arrayLinks) {
