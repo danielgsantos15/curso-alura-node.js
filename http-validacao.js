@@ -15,7 +15,7 @@ async function checaStatus(arrayURLs) {
 }
 
 function geraArrayDeURLs(arrayLinks) {
-  return arrayLinks[0]
+  return arrayLinks
   .map(objetoLink => Object
     .values(objetoLink).join())
 }
@@ -25,7 +25,7 @@ async function validaURLs(arrayLinks) {
   const statusLinks = await checaStatus(links)
   const results = Object.assign(statusLinks)
 
-  const resultados = arrayLinks[0].map((objeto, i) => ({
+  const resultados = arrayLinks.map((objeto, i) => ({
     ...objeto,
     status: statusLinks[i]
   }))
