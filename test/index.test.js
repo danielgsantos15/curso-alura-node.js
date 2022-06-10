@@ -14,4 +14,8 @@ describe('pegaArquivo::', () => {
     const resultado = await pegaArquivo('./test/arquivos')
     expect(resultado).toEqual(arrayResult)
   })
+  it('deve retornar mensagem "não há links"', async () => {
+    const resultado = await pegaArquivo('./test/semLinks')
+    expect(resultado).toBe('não há links')
+  })
 })
